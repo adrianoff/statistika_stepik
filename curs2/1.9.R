@@ -26,3 +26,33 @@ smart_test(short_df)
 #2 ##################################################
 
 
+#6 ##################################################
+
+x <- read.csv("https://stepic.org/media/attachments/course/524/test_drugs.csv")
+t = table(x)  
+r = chisq.test(t)
+idx <- which(r$stdres == max(r$stdres), arr.ind = T)
+c(rownames(t)[idx[1]], colnames(t)[idx[2]])
+
+?chisq.test
+
+max_resid <- function(x){
+  t <- table(x)  
+  r <- chisq.test(t)
+  idx <- which(r$stdres == max(r$stdres), arr.ind = T)
+  rez <- c(rownames(t)[idx[1]], colnames(t)[idx[2]])
+  
+  return(rez)
+}
+
+#7 ############################################################
+
+library("ggplot2")
+str(diamonds)
+
+obj <- ggplot(diamonds, aes(color))+
+  geom_bar(aes(fill = cut), position=position_dodge())
+
+obj
+
+
