@@ -1,3 +1,7 @@
+
+
+#1 ##################################################
+
 long_df <- mtcars[,c("am", "vs")]
 short_df <- mtcars[1:20,c("am", "vs")]
 
@@ -17,3 +21,8 @@ smart_test <- function(test_data){
 
 smart_test(long_df)
 smart_test(short_df)
+
+
+#2 ##################################################
+
+
