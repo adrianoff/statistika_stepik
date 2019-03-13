@@ -64,11 +64,44 @@ get_features <- function(dataset) {
   
 }
 
-
 get_features(test_data)
 
 test_data <- data.frame(is_prohibited = factor( rep(1:2, each = 15)),weight = c( 83,75,95,80,77,78,86,77,73,71,80,84,94,83,74,83,88,85,91,88,85,82,73,73,80,79,80,87,83,79,83,75,95,80,77,78,86,77,73,71,80,84,94,83,74,83,88,85,91,88,85,82,73,73,80,79,80,87,83,79 ),length = c( 44,40,41,58,48,47,55,54,42,51,54,41,49,56,56,46,53,48,59,54,57,52,59,53,52,54,35,51,56,49,44,40,41,58,48,47,55,54,42,51,54,41,49,56,56,46,53,48,59,54,57,52,59,53,52,54,35,51,56,49 ),width = c( 28,25,18,8,17,19,3,11,23,11,26,11,21,11,26,20,19,34,24,19,12,30,7,16,40,16,14,28,30,31,28,25,18,8,17,19,3,11,23,11,26,11,21,11,26,20,19,34,24,19,12,30,7,16,40,16,14,28,30,31 ),type = factor(c( 1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2 )))
 get_features(test_data)
+
+
+
+#4
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_data_passangers.csv")
+data_for_predict <-read.csv("https://stepic.org/media/attachments/course/524/predict_passangers.csv")
+
+most_suspicious <- function(test_data, data_for_predict){
+  model <- glm(is_prohibited ~ ., test_data, family = "binomial")
+  predictions <-  predict(model, newdata = data_for_predict, type = "response")
+  max_prob <- max(predictions)
+  data_for_predict['is_prohibited'] <- predictions
+  
+  rez <- data_for_predict$passangers[which(data_for_predict$is_prohibited == max_prob)]
+  
+  return (rez)
+}
+
+rez <- most_suspicious(test_data, data_for_predict)
+rez
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
