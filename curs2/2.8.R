@@ -90,19 +90,26 @@ rez <- most_suspicious(test_data, data_for_predict)
 rez
 
 
+#5
 
+str(iris)
+nums <- unlist(lapply(iris, is.numeric)) 
+numerical_iris <- iris[ , nums]
 
+rez <- lapply(numerical_iris, shapiro.test)
+for(i in rez){print(i$p.value)}
 
+normality_test <- function(dataset) {
+  nums <- unlist(lapply(dataset, is.numeric)) 
+  numerical_dataset <- dataset[ , nums]
+  
+  rezult_p_values <- c()
+  for(i in lapply(numerical_dataset, shapiro.test)) {
+    rezult_p_values <- c(rezult_p_values, i$p.value)
+  }
+  
+  return(rezult_p_values)
+}
 
-
-
-
-
-
-
-
-
-
-
-
+normality_test(iris)
 
