@@ -91,23 +91,6 @@ rez
 
 
 #5
-
-dataset <- iris
-nums <- unlist(lapply(dataset, is.numeric)) 
-numerical_dataset <- dataset[ , nums]
-
-rezult_p_values <- c()
-for(i in lapply(numerical_dataset, shapiro.test)) {
-  rezult_p_values <- c(rezult_p_values, i$p.value)
-}
-
-rez_df <- data.frame() 
-colnames(rez_df) <- colnames(numerical_dataset)
-rez_df <- data.frame(rezult_p_values)
-rez_df
-colnames(numerical_dataset)
-colnames(rez_df) <- colnames(numerical_dataset)
-
 normality_test <- function(dataset) {
   nums <- unlist(lapply(dataset, is.numeric)) 
   numerical_dataset <- dataset[ , nums]
@@ -116,12 +99,23 @@ normality_test <- function(dataset) {
   for(i in lapply(numerical_dataset, shapiro.test)) {
     rezult_p_values <- c(rezult_p_values, i$p.value)
   }
-  
-  rez_df <- data.frame(rezult_p_values)
+
+  rez_df <- data.frame()   
+  rez_df <- rbind(rez_df, rezult_p_values)
   colnames(rez_df) <- colnames(numerical_dataset)
   
-  return(rezult_p_values)
+  return(unlist(rez_df))
 }
 
 normality_test(iris)
+
+test <- read.csv("https://stepic.org/media/attachments/course/524/test.csv")
+normality_test(test)
+
+
+
+#6
+smart_anova <- function(test_data){
+  
+}
 
