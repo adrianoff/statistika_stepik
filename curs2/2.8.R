@@ -92,12 +92,21 @@ rez
 
 #5
 
-str(iris)
-nums <- unlist(lapply(iris, is.numeric)) 
-numerical_iris <- iris[ , nums]
+dataset <- iris
+nums <- unlist(lapply(dataset, is.numeric)) 
+numerical_dataset <- dataset[ , nums]
 
-rez <- lapply(numerical_iris, shapiro.test)
-for(i in rez){print(i$p.value)}
+rezult_p_values <- c()
+for(i in lapply(numerical_dataset, shapiro.test)) {
+  rezult_p_values <- c(rezult_p_values, i$p.value)
+}
+
+rez_df <- data.frame() 
+colnames(rez_df) <- colnames(numerical_dataset)
+rez_df <- data.frame(rezult_p_values)
+rez_df
+colnames(numerical_dataset)
+colnames(rez_df) <- colnames(numerical_dataset)
 
 normality_test <- function(dataset) {
   nums <- unlist(lapply(dataset, is.numeric)) 
@@ -107,6 +116,9 @@ normality_test <- function(dataset) {
   for(i in lapply(numerical_dataset, shapiro.test)) {
     rezult_p_values <- c(rezult_p_values, i$p.value)
   }
+  
+  rez_df <- data.frame(rezult_p_values)
+  colnames(rez_df) <- colnames(numerical_dataset)
   
   return(rezult_p_values)
 }
