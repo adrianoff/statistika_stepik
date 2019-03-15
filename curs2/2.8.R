@@ -115,7 +115,16 @@ normality_test(test)
 
 
 #6
-smart_anova <- function(test_data){
-  
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/s_anova_test.csv")
+colnames(test_data) <- c('x', 'y')
+lvls <- levels(test_data$y)
+
+shapiro_tests <- list()
+for (lvl in lvls) {
+  shapiro_test <- shapiro.test(test_data[test_data$y == 'A', ]$x)
+  shapiro_tests <- list(shapiro_tests, shapiro_test)
 }
 
+smart_anova <- function(test_data) {
+  
+}
