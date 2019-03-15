@@ -116,6 +116,8 @@ normality_test(test)
 
 #6
 test_data <- read.csv("https://stepic.org/media/attachments/course/524/s_anova_test.csv")
+test_data <- as.data.frame(list(x = c(0.95, -0.81, 1.19, 0.74, 0.17, -0.62, -0.93, -0.67, -0.77, -0.83, 1.31, -0.18, -1.17, 0.05, 0.46, 0.56, -1.66, 0.36, -0.92, -0.48, -1.42, 0.16, -0.13, -0.64, -1.21, -0.32, 0.18, 0.35, -0.88, -2.22), y = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)))
+test_data$y <-  factor(test_data$y, labels = c('A', 'B', 'C'))
 colnames(test_data) <- c('x', 'y')
 lvls <- levels(test_data$y)
 
@@ -129,7 +131,7 @@ for (lvl in lvls) {
 bartlett_test <- bartlett.test(x ~ y, test_data)
 bartlett_test_p_value <- bartlett_test$p.value
 
-if (max(as.vector(shapiro_tests_p_values)) >= 0.05 && bartlett_test_p_value >= 0.05) {
+if (all(shapiro_tests_p_values) >= 0.05 && bartlett_test_p_value >= 0.05) {
   fit <- aov(x ~ y, test_data)
   result <- c(summary(fit)[[1]]$'Pr(>F)'[1])
   names(result) <- c('ANOVA')
@@ -138,6 +140,7 @@ if (max(as.vector(shapiro_tests_p_values)) >= 0.05 && bartlett_test_p_value >= 0
   result <- fit$p.value
   names(result) <- c('KW')
 }
+result
 
 smart_anova <- function(test_data) {
   colnames(test_data) <- c('x', 'y')
@@ -153,7 +156,7 @@ smart_anova <- function(test_data) {
   bartlett_test <- bartlett.test(x ~ y, test_data)
   bartlett_test_p_value <- bartlett_test$p.value
   
-  if (max(as.vector(shapiro_tests_p_values)) >= 0.05 && bartlett_test_p_value >= 0.05) {
+  if ((max(shapiro_tests_p_values) >= 0.05) & (bartlett_test_p_value >= 0.05)) {
     fit <- aov(x ~ y, test_data)
     result <- c(summary(fit)[[1]]$'Pr(>F)'[1])
     names(result) <- c('ANOVA')
@@ -165,3 +168,7 @@ smart_anova <- function(test_data) {
   
   return(result)
 }
+
+test_data <- as.data.frame(list(x = c(0.95, -0.81, 1.19, 0.74, 0.17, -0.62, -0.93, -0.67, -0.77, -0.83, 1.31, -0.18, -1.17, 0.05, 0.46, 0.56, -1.66, 0.36, -0.92, -0.48, -1.42, 0.16, -0.13, -0.64, -1.21, -0.32, 0.18, 0.35, -0.88, -2.22), y = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)))
+test_data$y <-  factor(test_data$y, labels = c('A', 'B', 'C'))
+smart_anova(test_data)
