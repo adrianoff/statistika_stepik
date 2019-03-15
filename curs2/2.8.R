@@ -119,12 +119,49 @@ test_data <- read.csv("https://stepic.org/media/attachments/course/524/s_anova_t
 colnames(test_data) <- c('x', 'y')
 lvls <- levels(test_data$y)
 
-shapiro_tests <- list()
+shapiro_tests_p_values <- c()
+i <- 0
 for (lvl in lvls) {
-  shapiro_test <- shapiro.test(test_data[test_data$y == 'A', ]$x)
-  shapiro_tests <- list(shapiro_tests, shapiro_test)
+  i <- i + 1
+  shapiro_test <- shapiro.test(test_data[test_data$y == lvl, ]$x)
+  shapiro_tests_p_values[i] <- shapiro_test$p.value
+}
+bartlett_test <- bartlett.test(x ~ y, test_data)
+bartlett_test_p_value <- bartlett_test$p.value
+
+if (max(as.vector(shapiro_tests_p_values)) >= 0.05 && bartlett_test_p_value >= 0.05) {
+  fit <- aov(x ~ y, test_data)
+  result <- c(summary(fit)[[1]]$'Pr(>F)'[1])
+  names(result) <- c('ANOVA')
+} else {
+  fit <- kruskal.test(x ~ y, test_data)
+  result <- fit$p.value
+  names(result) <- c('KW')
 }
 
 smart_anova <- function(test_data) {
+  colnames(test_data) <- c('x', 'y')
+  lvls <- levels(test_data$y)
   
+  shapiro_tests_p_values <- c()
+  i <- 0
+  for (lvl in lvls) {
+    i <- i + 1
+    shapiro_test <- shapiro.test(test_data[test_data$y == lvl, ]$x)
+    shapiro_tests_p_values[i] <- shapiro_test$p.value
+  }
+  bartlett_test <- bartlett.test(x ~ y, test_data)
+  bartlett_test_p_value <- bartlett_test$p.value
+  
+  if (max(as.vector(shapiro_tests_p_values)) >= 0.05 && bartlett_test_p_value >= 0.05) {
+    fit <- aov(x ~ y, test_data)
+    result <- c(summary(fit)[[1]]$'Pr(>F)'[1])
+    names(result) <- c('ANOVA')
+  } else {
+    fit <- kruskal.test(x ~ y, test_data)
+    result <- fit$p.value
+    names(result) <- c('KW')
+  }
+  
+  return(result)
 }
