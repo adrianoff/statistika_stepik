@@ -172,3 +172,13 @@ smart_anova <- function(test_data) {
 test_data <- as.data.frame(list(x = c(0.95, -0.81, 1.19, 0.74, 0.17, -0.62, -0.93, -0.67, -0.77, -0.83, 1.31, -0.18, -1.17, 0.05, 0.46, 0.56, -1.66, 0.36, -0.92, -0.48, -1.42, 0.16, -0.13, -0.64, -1.21, -0.32, 0.18, 0.35, -0.88, -2.22), y = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)))
 test_data$y <- factor(test_data$y, labels = c('A', 'B', 'C'))
 smart_anova(test_data)
+
+
+
+
+#7
+
+install.packages("dplyr")
+library("dplyr")
+
+
