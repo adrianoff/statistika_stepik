@@ -131,7 +131,7 @@ for (lvl in lvls) {
 bartlett_test <- bartlett.test(x ~ y, test_data)
 bartlett_test_p_value <- bartlett_test$p.value
 
-if (all(shapiro_tests_p_values) >= 0.05 && bartlett_test_p_value >= 0.05) {
+if (all(shapiro_tests_p_values) >= 0.05 & bartlett_test_p_value >= 0.05) {
   fit <- aov(x ~ y, test_data)
   result <- c(summary(fit)[[1]]$'Pr(>F)'[1])
   names(result) <- c('ANOVA')
