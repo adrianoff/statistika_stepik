@@ -31,7 +31,9 @@ test_data['cluster'] <- cluster
 test_data[, -ncol(test_data)]
 summary(aov(X1 ~ cluster, test_data))
 
-get_difference<-  function(test_data, n_cluster) {
+sapply(test_data[, -ncol(test_data)], function(x) {print(x)})
+
+get_difference <- function(test_data, n_cluster) {
   dist_matrix <- dist(test_data)
   fit <- hclust(dist_matrix)
   cluster <- cutree(fit, cluster_number)
