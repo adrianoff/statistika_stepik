@@ -19,26 +19,13 @@ smart_hclust<-  function(test_data, cluster_number) {
 
 
 
-
 # 2
-test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_data_hclust.csv")
-dist_matrix <- dist(test_data)
-fit <- hclust(dist_matrix)
-cluster <- cutree(fit, 3)
-test_data['cluster'] <- cluster
-
-
-test_data[, -ncol(test_data)]
-summary(aov(X1 ~ cluster, test_data))
-
-sapply(test_data[, -ncol(test_data)], function(x) {print(x)})
-
-get_difference <- function(test_data, n_cluster) {
-  dist_matrix <- dist(test_data)
-  fit <- hclust(dist_matrix)
-  cluster <- cutree(fit, cluster_number)
-  test_data['cluster'] <- as.factor(cluster)
-  
-  
+get_difference <- function(test_data, n_cluster){    
+  dist_matrix <- dist(test_data)    
+  fit <- hclust(dist_matrix)    
+  test_data$cluster <- as.factor(cutree(fit, n_cluster))    
+  p_val <- sapply(test_data[,-ncol(test_data)],    
+                  function(x) {summary(aov(x~cluster, test_data))[[1]][1,'Pr(>F)']})    
+  return(names(p_val)[p_val < 0.05])    
 }
 
