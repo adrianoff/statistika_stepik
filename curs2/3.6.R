@@ -29,3 +29,40 @@ get_difference <- function(test_data, n_cluster){
   return(names(p_val)[p_val < 0.05])    
 }
 
+
+# 3
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/pca_test.csv")
+str(prcomp(test_data))
+prcomp(test_data)$x[, 'PC1']
+
+get_pc <- function(d) {
+  rez <- prcomp(test_data)
+  d['PC1'] <- rez$x[, 'PC1']
+  d['PC2'] <- rez$x[, 'PC2']
+  
+  return(d)
+}
+
+get_pc(test_data)
+
+
+# 4
+get_pca2 <- function(data){
+  rez <- prcomp(data)
+  
+  n_imp <- min(
+    which(
+      summary(rez)$importance[3, ] > 0.90
+      )
+    )
+  
+  return(cbind(data, rez$x[, 1:n_imp]))
+}
+get_pca2(swiss)
+
+
+# 5
+
+
+
+
