@@ -62,6 +62,48 @@ get_pca2(swiss)
 
 
 # 5
+#test_data <- read.csv("https://stepic.org/media/attachments/course/524/Norris_2.csv")
+#test_data <- read.csv("https://stepic.org/media/attachments/course/524/Norris_3.csv")
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/Norris_2.csv")
+is_multicol <- function(d) {
+  cor <- cor(d)
+  
+  cor_columns <- c()
+  for(j in 1:nrow(cor))
+  {
+    for(k in 1:ncol(cor))
+    {
+      if (round(abs(cor[j,k]), 2) == 1.00 && k!=j)
+      {
+        cor_columns <- c(cor_columns, rownames(cor)[j])
+      }
+    }
+  }
+  
+  if(length(cor_columns) == 0) {
+    return("There is no collinearity in the data")
+  } else {
+    return(cor_columns)  
+  }
+}
+is_multicol(test_data)
+
+
+is_multicol_best <- function(d) {
+  d <- abs(cor(d))     
+  d[lower.tri(d)] <- 0    
+  diag(d) <- 0    
+  index <- which((1-d) < 1e-10, arr.ind = T)    
+  if (length(index) == 0){      
+    return('There is no collinearity in the data')    
+  } else {      
+    return(rownames(d)[index])      
+  }      
+}
+
+
+
+
 
 
 
