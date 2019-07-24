@@ -89,6 +89,18 @@ most_suspicious <- function(test_data, data_for_predict){
 rez <- most_suspicious(test_data, data_for_predict)
 rez
 
+#вариант
+most_suspicious <- function(test_data, data_for_predict){    
+	fit <- glm(is_prohibited ~., test_data, family = 'binomial')    
+	probs <- predict(fit, newdata = data_for_predict, type = 'response')    
+	index <- which(probs == max(probs))    
+	passanger_name <- data_for_predict$passangers[index]    
+	return(passanger_name)    
+}
+                                 
+                                 
+                                 
+                                 
 
 #5
 normality_test <- function(dataset) {
@@ -113,6 +125,14 @@ test <- read.csv("https://stepic.org/media/attachments/course/524/test.csv")
 normality_test(test)
 
 
+                                 
+normality_test <- function(dataset){    
+	numeric_var <- sapply(dataset, is.numeric)  
+	sapply(dataset[numeric_var], function(x) shapiro.test(x)$p.value)    
+}                                 
+                                 
+                                 
+                                 
 
 #6
 test_data <- read.csv("https://stepic.org/media/attachments/course/524/s_anova_test.csv")
@@ -172,3 +192,20 @@ smart_anova <- function(test_data) {
 test_data <- as.data.frame(list(x = c(0.95, -0.81, 1.19, 0.74, 0.17, -0.62, -0.93, -0.67, -0.77, -0.83, 1.31, -0.18, -1.17, 0.05, 0.46, 0.56, -1.66, 0.36, -0.92, -0.48, -1.42, 0.16, -0.13, -0.64, -1.21, -0.32, 0.18, 0.35, -0.88, -2.22), y = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)))
 test_data$y <- factor(test_data$y, labels = c('A', 'B', 'C'))
 smart_anova(test_data)
+         
+         
+         
+         
+smart_anova <- function(test){  
+	p_normal <- unlist(by(test[, 1], test[, 2], function(x) shapiro.test(x)$p.value))   
+	sd_equal <- bartlett.test(x ~ y, test)$p.value  
+	if (all(p_normal > 0.05) & sd_equal > 0.05){    
+		fit <- aov(x ~ y, test)    
+		result <- c(ANOVA = summary(fit)[[1]]$'Pr(>F)'[1])    
+		return(result)  
+	} else {    
+		fit <- kruskal.test(x ~ y, test)    
+		result <- c(KW = fit$p.value)    
+		return(result)    
+		}    
+	}         
