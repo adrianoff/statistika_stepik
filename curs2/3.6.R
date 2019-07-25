@@ -102,7 +102,16 @@ is_multicol_best <- function(d) {
 }
 
 
+#6
 
+library(ggplot2)
+dist_matrix <- dist(swiss) 
+fit <- hclust(dist_matrix) 
+swiss$clusters <- factor(cutree(fit, 2))
+my_plot <- ggplot(swiss, aes(Education, Catholic, col = clusters))+
+  geom_point()+
+  geom_smooth(method = "lm")
+my_plot
 
 
 
