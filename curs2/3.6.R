@@ -60,6 +60,16 @@ get_pca2 <- function(data){
 }
 get_pca2(swiss)
 
+#var2
+
+get_pca2 <- function(test_data){    
+	fit <- prcomp(test_data)    
+	cum_prop <- summary(fit)$importance['Cumulative Proportion',]    
+	test_data <- cbind(test_data, fit$x[,1:min(which(cum_prop>0.9))])    
+	return(test_data)    
+}
+
+
 
 # 5
 #test_data <- read.csv("https://stepic.org/media/attachments/course/524/Norris_2.csv")
