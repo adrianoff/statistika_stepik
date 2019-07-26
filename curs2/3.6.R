@@ -46,6 +46,25 @@ get_pc <- function(d) {
 get_pc(test_data)
 
 
+#var2
+
+get_pc <- function(test){    
+	fit <- prcomp(test)    
+	test<- cbind(test, fit$x[,1:2])    
+	return(test)    
+}
+
+
+#var3
+
+get_pc <- function(test){    
+	fit <- prcomp(test)    
+	test<- cbind(test, fit$x[,1:2])    
+	return(test)    
+}
+
+
+
 # 4
 get_pca2 <- function(data){
   rez <- prcomp(data)
